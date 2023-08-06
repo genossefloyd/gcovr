@@ -294,6 +294,10 @@ def pytest_generate_tests(metafunc):
                     name == "cmake_gtest" and not GCOVR_ISOLATED_TEST,
                     reason="only available in docker",
                 ),
+                pytest.mark.skipif(
+                    name == "not_writable_source_dir" and not GCOVR_ISOLATED_TEST,
+                    reason="only available in docker",
+                ),
                 pytest.mark.xfail(
                     name == "exclude-throw-branches"
                     and format == "html"
@@ -332,6 +336,10 @@ def pytest_generate_tests(metafunc):
                 pytest.mark.xfail(
                     name in ["wrong-casing"] and not IS_WINDOWS,
                     reason="Only windows has a case insensitive file system",
+                ),
+                pytest.mark.xfail(
+                    name in ["gcov-ignore_output_error"] and IS_WINDOWS,
+                    reason="Permission is ignored on Windows",
                 ),
                 pytest.mark.xfail(
                     name == "gcc-abspath"
